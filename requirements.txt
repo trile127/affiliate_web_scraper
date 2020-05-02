@@ -1,0 +1,2 @@
+Scrapy~=2.0.1
+beautifulsoup4~=4.9.0
