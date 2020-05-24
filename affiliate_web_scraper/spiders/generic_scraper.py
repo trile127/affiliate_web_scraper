@@ -41,15 +41,18 @@ class GenericScraperSpider(scrapy.Spider):
             return
         self.visited_urls.add(response.url)
         hyperlinks = response.css('a::attr(href)').getall()
+        h1_desc = response.css('h1::text').getall()
         p_desc = response.css('p::text').getall()
         div_desc = response.css('div::text').getall()
         a_desc = response.css('a::text').getall()
         unique_desc: set = set(p_desc)
         unique_desc.update(div_desc)
-        unique_desc.update(a_desc)
+        unique_desc.update(h1_desc)
+        # leave out hyperlinks for now since false positives.
+        # unique_desc.update(a_desc)
         description_results = []
         for description in unique_desc:
-            if self.search_term in description:
+            if self.search_term.lower() in description.lower():
                 description_results.append(description)
         if description_results:
             yield {
@@ -58,7 +61,8 @@ class GenericScraperSpider(scrapy.Spider):
                 'search_term': self.search_term
             }
 
-        junk_url_strings = ["@", "mail", "?merchant=", '?post=', ".jpg", ".mov", ".mp4"]
+        junk_url_strings = ["@", "mail", "?merchant=", '?post=', ".jpg", ".mov", ".mp4", ".png", ".txt", ".mp3",
+                            ".mpeg", "search"]
         for hyperlink in hyperlinks:
             junk_res = any(ele in hyperlink for ele in junk_url_strings)
             res = any(ele in hyperlink for ele in self.allowed_domains)

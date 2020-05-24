@@ -25,5 +25,8 @@ scrapy.cmdline runspider generic_scraper.py -o url_results.json -a domains=https
 # Run from Command Line:
 ```bash
 # From directory: <path-to>/affiliate_web_scraper/
-scrapy runspider generic_scraper.py -o url_results.json -a domains=https://thewirecutter.com/,https://appliancebuyersguide.com -a allowed_domains=thewirecutter.com,appliancebuyersguide.com -a search_term=SHEM63W55N
+scrapy runspider affiliate_web_scraper/spiders/generic_scraper.py -o url_results.json -a domains=https://thewirecutter.com/,https://appliancebuyersguide.com -a allowed_domains=thewirecutter.com,appliancebuyersguide.com -a search_term=SHEM63W55N
 ```
+
+# Notes
+Do not use on digitaltrends.com or consumeraffairs.com
